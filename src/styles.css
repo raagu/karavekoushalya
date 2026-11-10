@@ -1487,12 +1487,16 @@ details[open] > summary > svg {
   padding-left: 8px;
   border-left: 2px solid #facc15;
 }
+/* Noto Kannada's ink rises above a tight Latin-style line box. Give the
+   title its own headroom and rebalance the subtitle without shifting English. */
 .locale-kn .site-header .brand-title {
   font-size: 32px;
-  line-height: 1.2;
+  line-height: 1;
+  padding-top: 0.3em;
 }
 .locale-kn .site-header .brand-subtitle {
   font-size: 13px;
+  margin-top: 5px;
 }
 .site-header .brand-karave {
   -webkit-text-stroke: 0;

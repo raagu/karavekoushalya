@@ -191,10 +191,26 @@ test("the logo, name, navigation and controls stay aligned at narrow and desktop
       const layout = await page.locator("header").evaluate((header) => {
         const brand = header.querySelector<HTMLElement>(".brand")!;
         const title = header.querySelector<HTMLElement>(".brand-title")!;
+        const subtitle = header.querySelector<HTMLElement>(".brand-subtitle")!;
         const controls = header.querySelector<HTMLElement>(".header-controls")!;
         const navigation = header.querySelector<HTMLElement>(".desktop-nav");
         const brandBox = brand.getBoundingClientRect();
         const titleBox = title.getBoundingClientRect();
+        const subtitleBox = subtitle.getBoundingClientRect();
+        const style = getComputedStyle(title);
+        const context = document.createElement("canvas").getContext("2d")!;
+        context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        const ink = context.measureText(
+          title.textContent!.replace(/\s+/g, " ").trim(),
+        );
+        const baseline =
+          titleBox.top +
+          parseFloat(style.paddingTop) +
+          (parseFloat(style.lineHeight) -
+            ink.fontBoundingBoxAscent -
+            ink.fontBoundingBoxDescent) /
+            2 +
+          ink.fontBoundingBoxAscent;
         const controlsBox = controls.getBoundingClientRect();
         const navBox =
           navigation && getComputedStyle(navigation).display !== "none"
@@ -202,6 +218,10 @@ test("the logo, name, navigation and controls stay aligned at narrow and desktop
             : null;
         return {
           titleRight: titleBox.right,
+          titleTop: titleBox.top,
+          inkTop: baseline - ink.actualBoundingBoxAscent,
+          inkBottom: baseline + ink.actualBoundingBoxDescent,
+          subtitleTop: subtitleBox.top,
           brandRight: brandBox.right,
           nextLeft: navBox?.left ?? controlsBox.left,
           navRight: navBox?.right,
@@ -217,6 +237,16 @@ test("the logo, name, navigation and controls stay aligned at narrow and desktop
         };
       });
       const label = `${language}, ${width}px`;
+      // Centered element boxes previously hid Kannada glyphs extending above
+      // the title. Check their actual bounds and retain space for the subtitle.
+      expect(
+        layout.inkTop,
+        `${label}: title glyphs must fit below the top of the title box`,
+      ).toBeGreaterThanOrEqual(layout.titleTop - 0.5);
+      expect(
+        layout.inkBottom,
+        `${label}: title glyphs must leave space before the subtitle`,
+      ).toBeLessThanOrEqual(layout.subtitleTop - 1);
       expect(
         layout.titleRight,
         `${label}: name must not overlap navigation or controls`,
