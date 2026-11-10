@@ -48,7 +48,7 @@ const roleIcons = {
   corporate: Building2,
   admin: ShieldCheck,
 };
-const logo = "/images/karave-koushalya-logo-v3.png";
+const logo = `${import.meta.env.BASE_URL}images/karave-koushalya-logo-v3.png`;
 
 function readRoute(): Route {
   const [name, query = ""] = window.location.hash
@@ -269,7 +269,7 @@ function LeadershipPortrait({
       )}
       <div className="portrait-photo">
         <img
-          src="/images/narayana-gowda-transparent.png"
+          src={`${import.meta.env.BASE_URL}images/narayana-gowda-transparent.png`}
           width="400"
           height="400"
           fetchPriority="high"

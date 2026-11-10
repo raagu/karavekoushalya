@@ -37,6 +37,7 @@ Services and partnerships remain plans in development. No existing enrollment to
 ```sh
 npm run build
 npm test
+npm run test:deployment
 npm run preview
 ```
 
@@ -44,7 +45,25 @@ Production files are written to `dist/`. The site uses hash routes, so static ho
 
 Browser checks cover desktop and mobile layouts, header alignment, Kannada/English persistence, leadership/vision/mission content, expandable program information, legacy links, registration dialogs, focus handling and automated accessibility. If needed, install the browser with `npx playwright install chromium`. The configuration can reuse an installed Chromium cache or `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
 
+The deployment checks serve the exact `dist/` build at an isolated domain root and at `/karavekoushalya/`, without a missing-file fallback. They verify images, bundled fonts, the favicon, all four direct hash routes and reloads, language persistence and registration behaviour. Build before running these checks. The temporary test servers use ports 4174 and 4175; they are not production servers.
+
 The requested yellow/red wordmark is a logotype. Accessibility checks apply the WCAG 1.4.3 logotype contrast exemption only to the marked name text; navigation, organisation subtitles, body text and all other accessibility rules remain checked.
+
+## GitHub Pages
+
+The repository is `https://github.com/raagu/karavekoushalya`. Keep **Settings → Pages → Build and deployment → Source** set to **GitHub Actions**.
+
+`.github/workflows/deploy.yml` installs the locked dependencies with Node.js 24, builds the website, checks the desktop/mobile app and production assets, then uploads only `dist/` and deploys it to the `github-pages` environment. Pushes to `main` deploy after the checks pass. Pull requests run the checks without publishing. The workflow can also be run manually from the Actions tab on `main`.
+
+The standard website address after a successful deployment is `https://raagu.github.io/karavekoushalya/`. Deployment progress and the final website URL appear in the Actions run. No personal access token is required by the workflow; its deployment job uses GitHub's short-lived token with Pages and identity permissions.
+
+Vite uses a relative asset base, and runtime images use `import.meta.env.BASE_URL`. The same build therefore works under the repository path and at a custom domain root. Keep the current hash routing when using this relative base.
+
+### Connect a domain later
+
+When ready, configure the domain under **Settings → Pages → Custom domain**, and update the domain provider's DNS records using [GitHub's custom-domain instructions](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site). Verify ownership and enable HTTPS once GitHub has provisioned the certificate. The current asset paths need no website code change for that move. No domain or DNS changes are made by the workflow.
+
+To roll back a site change, revert the relevant source commit and push the revert to `main`; the same checks and deployment run again.
 
 ## Content and assets
 
@@ -66,4 +85,4 @@ The source files from immediately before the royal blue header and home page upd
 
 The source files from before the light home page refinement are in `backups/karave-koushalya-before-light-home-2026-11-10.zip`.
 
-Hosting/domain setup, native registration, authentication, website data storage and operational monitoring are future work. Guidance registration currently uses the linked Google Form.
+Custom-domain/DNS setup, native registration, authentication, website data storage and operational monitoring are future work. Guidance registration currently uses the linked Google Form.
