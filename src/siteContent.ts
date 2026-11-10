@@ -159,12 +159,14 @@ export const programAreas: ProgramArea[] = [
 ];
 
 export const guidanceRegistrationUrl = "https://forms.gle/GD4aqzcX7ezvwxQj7";
+export const mentorRegistrationUrl = "https://forms.gle/YnSzaPG25uEhjYDS9";
 
 type Role = {
   id: "mentee" | "mentor" | "corporate" | "admin";
   title: Localized;
   description: Localized;
   action: Localized;
+  registrationUrl?: string;
 };
 
 export const roles: Role[] = [
@@ -176,6 +178,7 @@ export const roles: Role[] = [
       "ಕೌಶಲ್ಯ, ವೃತ್ತಿ ಮಾರ್ಗದರ್ಶನ ಮತ್ತು ಅವಕಾಶಗಳನ್ನು ಬಯಸುವ ವಿದ್ಯಾರ್ಥಿಗಳು, ಉದ್ಯೋಗಾಕಾಂಕ್ಷಿಗಳು ಮತ್ತು ವೃತ್ತಿಪರರಿಗಾಗಿ.",
     ),
     action: copy("Register for guidance", "ಮಾರ್ಗದರ್ಶನಕ್ಕಾಗಿ ನೋಂದಣಿ"),
+    registrationUrl: guidanceRegistrationUrl,
   },
   {
     id: "mentor",
@@ -185,6 +188,7 @@ export const roles: Role[] = [
       "ನಿಮ್ಮ ವೃತ್ತಿ ಅನುಭವ ಹಂಚಿಕೊಂಡು, ಮತ್ತೊಬ್ಬರು ಮುಂದಿನ ಹೆಜ್ಜೆ ಇಡಲು ನೆರವಾಗಿ.",
     ),
     action: copy("Mentor registration", "ಮಾರ್ಗದರ್ಶಕರ ನೋಂದಣಿ"),
+    registrationUrl: mentorRegistrationUrl,
   },
   {
     id: "corporate",

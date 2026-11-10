@@ -48,7 +48,7 @@ for (const language of ["kn", "en"] as const) {
       });
     }
 
-    await page.getByTestId("register-mentor").click();
+    await page.getByTestId("register-corporate").click();
     const result = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
       .analyze();

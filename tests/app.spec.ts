@@ -74,12 +74,33 @@ test("home introduces leadership, vision and mission clearly", async ({
   await expect(page.locator("main")).not.toContainText("ತ.ನಾ.");
 });
 
-test("joining offers three public roles and links guidance registration to the supplied form", async ({
+test("joining offers three public roles and links guidance and mentor registration to their supplied forms", async ({
   page,
 }) => {
   await english(page);
   await page.goto("/#/join");
-  const formUrl = "https://forms.gle/GD4aqzcX7ezvwxQj7";
+  const forms = [
+    {
+      id: "mentee",
+      url: "https://forms.gle/GD4aqzcX7ezvwxQj7",
+      en: "Register for guidance",
+      kn: "ಮಾರ್ಗದರ್ಶನಕ್ಕಾಗಿ ನೋಂದಣಿ",
+    },
+    {
+      id: "mentor",
+      url: "https://forms.gle/YnSzaPG25uEhjYDS9",
+      en: "Mentor registration",
+      kn: "ಮಾರ್ಗದರ್ಶಕರ ನೋಂದಣಿ",
+    },
+  ];
+  // Keep browser checks independent of the external form and never submit data.
+  await page.context().route(forms[1].url, (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "text/html",
+      body: "<title>Mentor registration form</title>",
+    }),
+  );
   for (const language of ["en", "kn"] as const) {
     if (language === "kn")
       await page.getByRole("button", { name: "ಕನ್ನಡ", exact: true }).click();
@@ -92,20 +113,30 @@ test("joining offers three public roles and links guidance registration to the s
     );
     await expect(page.getByTestId("register-candidate")).toHaveCount(0);
     await expect(page.locator("main .administrator-row")).toHaveCount(0);
-    const guidance = page.getByTestId("register-mentee");
-    await expect(guidance).toHaveJSProperty("tagName", "A");
-    await expect(guidance).toHaveAttribute("href", formUrl);
-    await expect(guidance).toHaveAttribute("target", "_blank");
-    await expect(guidance).toHaveAttribute("rel", /noopener/);
-    await expect(guidance).toHaveAttribute("rel", /noreferrer/);
-    await expect(guidance).toContainText(
-      language === "en" ? "Register for guidance" : "ಮಾರ್ಗದರ್ಶನಕ್ಕಾಗಿ ನೋಂದಣಿ",
-    );
+    for (const form of forms) {
+      const registration = page.getByTestId(`register-${form.id}`);
+      await expect(registration).toHaveJSProperty("tagName", "A");
+      await expect(registration).toHaveAttribute("href", form.url);
+      await expect(registration).toHaveAttribute("target", "_blank");
+      await expect(registration).toHaveAttribute("rel", /noopener/);
+      await expect(registration).toHaveAttribute("rel", /noreferrer/);
+      await expect(registration).toContainText(
+        language === "en" ? form.en : form.kn,
+      );
+    }
+    const popupPromise = page.waitForEvent("popup");
+    await page.getByTestId("register-mentor").click();
+    const popup = await popupPromise;
+    await expect(popup).toHaveURL(forms[1].url);
+    await expect(popup).toHaveTitle("Mentor registration form");
+    await expect(page.getByRole("dialog")).not.toBeVisible();
+    await expect(page).toHaveURL(/#\/join$/);
+    await popup.close();
   }
-  // The external form is intentionally not opened or submitted by this check.
+  // Only a stubbed form page was opened; the real Google Form was not submitted.
 });
 
-test("mentor, partner and administrator options show the required dialog without collecting data onsite", async ({
+test("partner and administrator options show the required dialog without collecting data onsite", async ({
   page,
 }) => {
   await english(page);
@@ -116,7 +147,7 @@ test("mentor, partner and administrator options show the required dialog without
       writes.push(request.url());
   });
   await expect(page.locator("form, input, textarea")).toHaveCount(0);
-  for (const role of ["mentor", "corporate", "admin"]) {
+  for (const role of ["corporate", "admin"]) {
     const registration = page.getByTestId(`register-${role}`);
     await registration.click();
     const dialog = page.getByRole("dialog");
@@ -138,7 +169,7 @@ test("Kannada registration has a translated explanation and close control", asyn
   page,
 }) => {
   await page.goto("/#/join");
-  await page.getByTestId("register-mentor").click();
+  await page.getByTestId("register-corporate").click();
   const dialog = page.getByRole("dialog");
   await expect(
     dialog.getByRole("heading", {

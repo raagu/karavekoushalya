@@ -74,7 +74,16 @@ for (const language of ["kn", "en"] as const) {
       "href",
       "https://forms.gle/GD4aqzcX7ezvwxQj7",
     );
-    await page.getByTestId("register-mentor").click();
+    const mentor = page.getByTestId("register-mentor");
+    await expect(mentor).toHaveJSProperty("tagName", "A");
+    await expect(mentor).toHaveAttribute(
+      "href",
+      "https://forms.gle/YnSzaPG25uEhjYDS9",
+    );
+    await expect(mentor).toHaveAttribute("target", "_blank");
+    await expect(mentor).toHaveAttribute("rel", /noopener/);
+    await expect(mentor).toHaveAttribute("rel", /noreferrer/);
+    await page.getByTestId("register-corporate").click();
     await expect(page.getByRole("dialog")).toBeVisible();
     await expect(
       page.getByRole("heading", {

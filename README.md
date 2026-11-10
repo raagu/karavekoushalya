@@ -18,17 +18,17 @@ Open `http://127.0.0.1:5178`. Kannada is the default language. The English/Kanna
 - **Home:** a concise introduction, a transparent portrait of T. A. Narayana Gowda (ಟಿ ಎ ನಾರಾಯಣ ಗೌಡರು), vision, mission and three program summaries.
 - **About us:** the initiative’s purpose, leadership, principles and optional future direction.
 - **Our programs:** skills and certification, career guidance and mentorship, employment and entrepreneurship. Further details expand on request.
-- **Get involved:** three public options—people seeking guidance, mentors, and companies/partners. Guidance registration opens the supplied Google Form. Administrator access stays in the footer.
+- **Get involved:** three public options—people seeking guidance, mentors, and companies/partners. Guidance and mentor registration open their supplied Google Forms. Administrator access stays in the footer.
 
 Older career-pathway and mentorship links still open the relevant program information.
 
 All dark surfaces and navy accents share `#0a132c`, including the header, footer, invitation section, portrait frames, headings and home page primary action. The existing semantic navy/blue colour tokens resolve to that shared shade; shadows retain their opacity. The home introduction now contrasts it with light pearl, warm ivory and mist blue, navy headings and emphasis with dark slate body text. The home page's navy primary action, white sections and light blue-grey program area keep the palette restrained. **Karave / ಕರವೇ is yellow; Koushalya / ಕೌಶಲ್ಯ is red**, in the header and footer. The larger, warm gold organisation subtitle has a gold accent beside it; responsive sizes keep the logo, name, subtitle and navigation aligned. English uses locally bundled Inter; Kannada uses Noto Sans Kannada. The supplied Kannada “ಕ” / gear logo and transparent portrait remain the brand assets. The supplied Gemini reference informed the initial visual theme; the current light home page follows the user's subsequent direction.
 
-The presentation uses a compact header with aligned controls and a gold underline for the active page. Larger supporting text, balanced section spacing and quieter secondary actions improve readability. Guidance registration receives the primary action style on the Get involved page; mentor and partner options retain their coming-soon dialogs. The light home page background and unified dark colour remain unchanged.
+The presentation uses a compact header with aligned controls and a gold underline for the active page. Larger supporting text, balanced section spacing and quieter secondary actions improve readability. Guidance registration receives the primary action style on the Get involved page; partner and administrator options retain their coming-soon dialogs. The light home page background and unified dark colour remain unchanged.
 
 ## Current scope
 
-Guidance registration links to `https://forms.gle/GD4aqzcX7ezvwxQj7` in a new tab. Registration details are handled by that external Google Form. Mentor, partner and footer administrator options display **The option coming soon**. The website itself has no registration forms, accounts, analytics or database storage. Only the language preference is stored in the browser.
+Guidance registration links to `https://forms.gle/GD4aqzcX7ezvwxQj7`, and mentor registration links to `https://forms.gle/YnSzaPG25uEhjYDS9`. Both open in a new tab; registration details are handled by their external Google Forms. Partner and footer administrator options display **The option coming soon**. The website itself has no registration forms, accounts, analytics or database storage. Only the language preference is stored in the browser.
 
 Services and partnerships remain plans in development. No existing enrollment totals, unconfirmed partners, government approvals, guaranteed jobs or funding approvals are presented as achievements.
 
@@ -85,4 +85,4 @@ The source files from immediately before the royal blue header and home page upd
 
 The source files from before the light home page refinement are in `backups/karave-koushalya-before-light-home-2026-11-10.zip`.
 
-Custom-domain/DNS setup, native registration, authentication, website data storage and operational monitoring are future work. Guidance registration currently uses the linked Google Form.
+Custom-domain/DNS setup, native registration, authentication, website data storage and operational monitoring are future work. Guidance and mentor registration currently use the linked Google Forms.

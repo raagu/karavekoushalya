@@ -20,7 +20,6 @@ import {
 import {
   copy,
   futureSteps,
-  guidanceRegistrationUrl,
   intro,
   leadershipDescription,
   mission,
@@ -789,8 +788,8 @@ function JoinPage({
             <span aria-hidden="true" />
             <p>
               {lang === "en"
-                ? "Guidance registration is open through Google Forms. Mentor and partner registration is coming soon."
-                : "ಮಾರ್ಗದರ್ಶನಕ್ಕಾಗಿ Google Forms ಮೂಲಕ ನೋಂದಾಯಿಸಬಹುದು. ಮಾರ್ಗದರ್ಶಕರು ಮತ್ತು ಸಹಭಾಗಿಗಳ ನೋಂದಣಿ ಶೀಘ್ರದಲ್ಲೇ."}
+                ? "Guidance and mentor registration use Google Forms. Partner registration is coming soon."
+                : "ಮಾರ್ಗದರ್ಶನ ಪಡೆಯಲು ಮತ್ತು ಮಾರ್ಗದರ್ಶಕರಾಗಿ ನೋಂದಾಯಿಸಲು Google Forms ಬಳಸಿ. ಸಹಭಾಗಿಗಳ ನೋಂದಣಿ ಶೀಘ್ರದಲ್ಲೇ."}
             </p>
           </div>
           <div className="role-grid">
@@ -805,13 +804,13 @@ function JoinPage({
                     </span>
                     <h2>{role.title[lang]}</h2>
                     <p>{role.description[lang]}</p>
-                    {role.id === "mentee" ? (
+                    {role.registrationUrl ? (
                       <a
                         className="text-link"
-                        href={guidanceRegistrationUrl}
+                        href={role.registrationUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        data-testid="register-mentee"
+                        data-testid={`register-${role.id}`}
                       >
                         {role.action[lang]}
                         <ArrowUpRight size={18} aria-hidden="true" />
@@ -833,8 +832,8 @@ function JoinPage({
           <p className="privacy-note">
             <ArrowUpRight size={15} aria-hidden="true" />
             {lang === "en"
-              ? "Guidance registration opens in a new tab on Google Forms."
-              : "ಮಾರ್ಗದರ್ಶನದ ನೋಂದಣಿ Google Forms ನಲ್ಲಿ ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ."}
+              ? "Guidance and mentor registration links open Google Forms in a new tab."
+              : "ಮಾರ್ಗದರ್ಶನ ಮತ್ತು ಮಾರ್ಗದರ್ಶಕರ ನೋಂದಣಿ ಲಿಂಕ್‌ಗಳು Google Forms ಅನ್ನು ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತವೆ."}
           </p>
         </div>
       </section>
