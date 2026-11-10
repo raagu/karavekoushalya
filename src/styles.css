@@ -101,7 +101,7 @@ p {
   margin-inline: auto;
 }
 .section {
-  padding-block: 84px;
+  padding-block: 76px;
 }
 .skip-link {
   position: fixed;
@@ -131,9 +131,9 @@ p {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  column-gap: 26px;
-  min-height: 104px;
-  padding-block: 13px;
+  column-gap: 24px;
+  min-height: 96px;
+  padding-block: 15px;
 }
 .brand {
   display: inline-flex;
@@ -177,47 +177,58 @@ p {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 6px;
 }
 .desktop-nav a {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: #eff6ff;
-  padding: 11px 12px;
+  padding: 12px 14px;
   border-radius: 8px;
   position: relative;
   white-space: nowrap;
   /* Keep foreground and background paired when the active page changes. */
   transition: none;
+  line-height: 1.5;
 }
 .desktop-nav a:hover {
   color: #fff;
   background: rgb(255 255 255 / 12%);
 }
 .desktop-nav a[aria-current="page"] {
-  color: var(--navy);
-  background: #fef3c7;
+  color: #fff;
+  background: rgb(255 255 255 / 8%);
   font-weight: 600;
+}
+.desktop-nav a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 14px;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand-yellow);
 }
 .header-controls {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   flex-shrink: 0;
 }
 .language-switch {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 9px 10px;
-  min-height: 44px;
+  padding: 10px 12px;
+  min-height: 46px;
   border: 1px solid rgb(191 219 254 / 40%);
   border-radius: 10px;
   background: rgb(255 255 255 / 8%);
   color: #fff;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   white-space: nowrap;
+  line-height: 1.5;
 }
 .language-switch:hover {
   background: rgb(255 255 255 / 16%);
@@ -265,9 +276,9 @@ p {
   background: #fbbf24;
 }
 .header-cta {
-  font-size: 12px;
-  min-height: 43px;
-  padding: 10px 16px;
+  font-size: 13px;
+  min-height: 46px;
+  padding: 11px 18px;
 }
 .menu-button {
   width: 38px;
@@ -307,12 +318,12 @@ p {
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 650;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.11em;
   color: var(--accent-ink);
   line-height: 1.8;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .section-label > span {
   width: 18px;
@@ -331,8 +342,11 @@ p {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    radial-gradient(ellipse at 83% 35%, rgb(203 218 236 / 48%), transparent 55%),
+  background: radial-gradient(
+      ellipse at 83% 35%,
+      rgb(203 218 236 / 48%),
+      transparent 55%
+    ),
     radial-gradient(ellipse at 92% 85%, rgb(226 213 187 / 24%), transparent 42%);
 }
 .hero :focus-visible {
@@ -350,16 +364,16 @@ p {
   align-items: center;
   gap: 72px;
   position: relative;
-  padding-block: 64px 70px;
+  padding-block: 64px;
 }
 .hero-copy {
   max-width: 590px;
 }
 .hero h1 {
-  font-size: clamp(44px, 4.3vw, 62px);
-  font-weight: 750;
+  font-size: clamp(44px, 4.2vw, 60px);
+  font-weight: 700;
   line-height: 1.14;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.04em;
   margin-bottom: 25px;
   color: var(--navy);
 }
@@ -367,23 +381,26 @@ p {
   color: var(--blue);
 }
 .hero-intro {
-  font-size: 15px;
-  max-width: 490px;
-  line-height: 1.95;
+  font-size: 16px;
+  max-width: 510px;
+  line-height: 1.85;
   color: #475569;
 }
 .hero-actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 13px;
-  margin-top: 30px;
+  gap: 20px;
+  margin-top: 32px;
 }
 .hero-actions .button-primary {
   color: #fff;
   background: var(--blue);
   border-color: var(--blue);
   box-shadow: 0 4px 12px rgb(10 19 44 / 12%);
+  min-height: 52px;
+  padding: 14px 24px;
+  font-size: 14px;
 }
 .hero-actions .button-primary:hover {
   background: var(--navy);
@@ -394,13 +411,19 @@ p {
 }
 .hero-actions .button-secondary {
   border: 1px solid #b9c5d4;
-  padding-inline: 21px;
+  padding-inline: 8px;
   color: var(--navy);
-  background: rgb(255 255 255 / 65%);
+  background: transparent;
+  border-color: transparent;
+  font-weight: 600;
+  font-size: 14px;
+  min-height: 52px;
 }
 .hero-actions .button-secondary:hover {
-  border-color: var(--navy);
-  background: #fff;
+  border-color: transparent;
+  background: transparent;
+  text-decoration: underline;
+  text-underline-offset: 5px;
 }
 .hero-commitment {
   display: flex;
@@ -416,7 +439,7 @@ p {
   flex-shrink: 0;
 }
 .hero-commitment p {
-  font-size: 11px;
+  font-size: 12px;
   color: #526176;
   line-height: 1.9;
 }
@@ -443,8 +466,8 @@ p {
   gap: 15px;
   padding: 12px 18px;
   color: #fde68a;
-  font-size: 8px;
-  letter-spacing: 0.12em;
+  font-size: 10px;
+  letter-spacing: 0.06em;
   line-height: 1.8;
   background: var(--navy);
 }
@@ -475,7 +498,7 @@ p {
 }
 .leadership-portrait figcaption > span {
   display: block;
-  font-size: 8px;
+  font-size: 11px;
   color: #fbbf24;
   letter-spacing: 0.12em;
   line-height: 1.8;
@@ -490,7 +513,7 @@ p {
 }
 .leadership-portrait figcaption p {
   margin-top: 6px;
-  font-size: 11px;
+  font-size: 13px;
   color: #cbd5e1;
 }
 .section-heading {
@@ -498,7 +521,7 @@ p {
   align-items: flex-end;
   justify-content: space-between;
   gap: 60px;
-  margin-bottom: 35px;
+  margin-bottom: 32px;
 }
 .section-heading > div {
   max-width: 700px;
@@ -510,15 +533,15 @@ p {
   letter-spacing: -0.04em;
 }
 .section-heading > p {
-  font-size: 14px;
-  line-height: 1.9;
+  font-size: 15px;
+  line-height: 1.85;
   max-width: 300px;
 }
 .purpose-section {
   background: #fff;
 }
 .purpose-compact {
-  padding-block: 70px;
+  padding-block: 76px;
   background: #fff;
 }
 .purpose-compact .purpose-icon {
@@ -562,8 +585,8 @@ p {
   margin-bottom: 12px;
 }
 .purpose-grid p {
-  font-size: 14px;
-  line-height: 1.95;
+  font-size: 15px;
+  line-height: 1.85;
   max-width: 430px;
 }
 .text-link {
@@ -571,7 +594,7 @@ p {
   align-items: center;
   gap: 11px;
   color: var(--accent-ink);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.8;
   padding: 0;
@@ -619,8 +642,8 @@ p {
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 30px;
-  min-height: 290px;
+  padding: 32px;
+  min-height: 300px;
   box-shadow: 0 8px 24px rgb(10 19 44 / 4%);
 }
 .program-card-top {
@@ -628,7 +651,7 @@ p {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 .program-icon {
   display: grid;
@@ -649,13 +672,13 @@ p {
 .program-card h3 {
   font-size: 22px;
   line-height: 1.45;
-  letter-spacing: -0.035em;
-  margin-bottom: 13px;
+  letter-spacing: -0.025em;
+  margin-bottom: 12px;
 }
 .program-card > p {
-  font-size: 14px;
-  line-height: 1.9;
-  margin-bottom: 29px;
+  font-size: 15px;
+  line-height: 1.85;
+  margin-bottom: 26px;
 }
 .program-card .text-link {
   margin-top: auto;
@@ -667,7 +690,7 @@ p {
   margin-top: 24px;
 }
 .audience-section {
-  padding-block: 62px;
+  padding-block: 64px;
   background: #fff;
 }
 .audience-inner {
@@ -692,7 +715,7 @@ p {
   justify-content: space-between;
   align-items: center;
   gap: 70px;
-  padding-block: 60px;
+  padding-block: 64px;
 }
 .label-light {
   color: #fbbf24;
@@ -761,8 +784,8 @@ p {
   margin-bottom: 25px;
 }
 .about-grid > div > p:not(.section-label) {
-  font-size: 14px;
-  line-height: 2;
+  font-size: 15px;
+  line-height: 1.85;
   margin-bottom: 19px;
 }
 .leadership-signature {
@@ -804,8 +827,8 @@ p {
   margin-bottom: 14px;
 }
 .principle-grid p {
-  font-size: 14px;
-  line-height: 1.95;
+  font-size: 15px;
+  line-height: 1.85;
 }
 .future-details {
   margin-top: 42px;
@@ -931,8 +954,8 @@ details[open] > summary > svg {
   margin-bottom: 15px;
 }
 .program-summary-copy > p {
-  font-size: 14px;
-  line-height: 1.95;
+  font-size: 15px;
+  line-height: 1.85;
   max-width: 800px;
 }
 .program-audience {
@@ -966,7 +989,7 @@ details[open] > summary > svg {
 }
 .program-feature-grid p {
   font-size: 14px;
-  line-height: 1.95;
+  line-height: 1.85;
 }
 .program-expansion > .text-link {
   margin: 0 32px 30px;
@@ -1005,7 +1028,7 @@ details[open] > summary > svg {
   align-items: flex-start;
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 33px;
+  padding: 32px;
   box-shadow: 0 8px 24px rgb(10 19 44 / 4%);
 }
 .role-icon {
@@ -1024,13 +1047,37 @@ details[open] > summary > svg {
   margin-bottom: 15px;
 }
 .role-card p {
-  font-size: 15px;
-  line-height: 1.9;
+  font-size: 16px;
+  line-height: 1.85;
   margin-bottom: 26px;
   max-width: 430px;
 }
 .role-card .text-link {
   margin-top: auto;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  color: var(--navy);
+}
+.role-card .text-link:hover {
+  background: var(--paper);
+  border-color: var(--navy);
+  text-decoration: none;
+}
+.role-card [data-testid="register-mentee"] {
+  color: #fff;
+  background: var(--navy);
+  border-color: var(--navy);
+}
+.role-card [data-testid="register-mentee"]:hover {
+  color: #fff;
+  background: var(--navy);
+  box-shadow: 0 0 0 3px rgb(10 19 44 / 12%);
 }
 .privacy-note {
   display: flex;
@@ -1045,6 +1092,7 @@ details[open] > summary > svg {
 .site-footer {
   background: var(--navy-deep);
   color: #e2e8f0;
+  border-top: 1px solid rgb(255 255 255 / 12%);
 }
 .footer-main {
   display: grid;
@@ -1066,12 +1114,13 @@ details[open] > summary > svg {
   font-weight: 750;
 }
 .brand-footer .brand-subtitle {
-  font-size: 8px;
+  font-size: 11px;
   color: #94a3b8;
+  line-height: 1.6;
 }
 .footer-intro > p {
-  font-size: 13px;
-  line-height: 1.95;
+  font-size: 14px;
+  line-height: 1.85;
   max-width: 300px;
   color: #94a3b8;
   margin-top: 21px;
@@ -1089,7 +1138,7 @@ details[open] > summary > svg {
   margin-block: 3px 13px;
 }
 .footer-links a {
-  font-size: 12px;
+  font-size: 14px;
   color: #94a3b8;
   line-height: 1.9;
 }
@@ -1101,7 +1150,7 @@ details[open] > summary > svg {
 }
 .footer-organisation .small-label {
   color: #fbbf24;
-  font-size: 9px;
+  font-size: 11px;
   margin-bottom: 14px;
   display: block;
 }
@@ -1117,7 +1166,7 @@ details[open] > summary > svg {
   display: block;
   margin-top: 15px;
   color: #94a3b8;
-  font-size: 12px;
+  font-size: 13px;
 }
 .footer-flag {
   display: block;
@@ -1133,7 +1182,7 @@ details[open] > summary > svg {
   align-items: center;
   gap: 25px;
   padding-block: 22px;
-  font-size: 10px;
+  font-size: 12px;
   color: #94a3b8;
 }
 .footer-bottom button {
@@ -1141,8 +1190,9 @@ details[open] > summary > svg {
   gap: 7px;
   align-items: center;
   padding: 0;
-  font-size: 10px;
+  font-size: 12px;
   color: #94a3b8;
+  min-height: 32px;
 }
 .site-footer :focus-visible {
   outline-color: #f59e0b;
@@ -1242,33 +1292,33 @@ details[open] > summary > svg {
   gap: 8px;
 }
 .locale-kn .desktop-nav a {
-  font-size: 12px;
+  font-size: 13px;
 }
 .locale-kn .button {
   font-size: 12px;
 }
 .locale-kn .header-cta {
-  font-size: 11px;
+  font-size: 12px;
 }
 .locale-kn .section-label {
   letter-spacing: 0.04em;
-  font-size: 10px;
+  font-size: 11px;
 }
 .locale-kn .hero h1 {
   font-size: 42px;
   line-height: 1.65;
   margin-bottom: 22px;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.025em;
 }
 .locale-kn .hero-intro {
-  font-size: 14px;
-  line-height: 2.1;
+  font-size: 15px;
+  line-height: 2;
 }
 .locale-kn .hero-commitment p {
-  font-size: 10px;
+  font-size: 11px;
 }
 .locale-kn .portrait-top {
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: 0.02em;
 }
 .locale-kn .leadership-portrait figcaption > span {
@@ -1279,30 +1329,31 @@ details[open] > summary > svg {
   line-height: 1.6;
 }
 .locale-kn .leadership-portrait figcaption p {
-  font-size: 10px;
+  font-size: 12px;
 }
 .locale-kn .section-heading h2 {
   font-size: 29px;
 }
 .locale-kn .section-heading > p {
-  font-size: 13px;
-  line-height: 2.05;
+  font-size: 14px;
+  line-height: 2;
 }
 .locale-kn .purpose-grid h3 {
   font-size: 21px;
 }
 .locale-kn .purpose-grid p {
-  font-size: 13px;
-  line-height: 2.05;
+  font-size: 14px;
+  line-height: 2;
 }
 .locale-kn .program-card h3 {
   font-size: 20px;
 }
 .locale-kn .program-card > p {
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 2;
 }
 .locale-kn .text-link {
-  font-size: 12px;
+  font-size: 13px;
 }
 .locale-kn .section-footnote {
   font-size: 11px;
@@ -1326,15 +1377,15 @@ details[open] > summary > svg {
   font-size: 36px;
 }
 .locale-kn .page-description {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 2;
 }
 .locale-kn .about-grid > div > h2 {
   font-size: 29px;
 }
 .locale-kn .about-grid > div > p:not(.section-label) {
-  font-size: 13px;
-  line-height: 2.1;
+  font-size: 14px;
+  line-height: 2;
 }
 .locale-kn .leadership-signature strong {
   font-size: 17px;
@@ -1343,8 +1394,8 @@ details[open] > summary > svg {
   font-size: 20px;
 }
 .locale-kn .principle-grid p {
-  font-size: 13px;
-  line-height: 2.05;
+  font-size: 14px;
+  line-height: 2;
 }
 .locale-kn .small-label {
   letter-spacing: 0.03em;
@@ -1356,8 +1407,8 @@ details[open] > summary > svg {
   font-size: 25px;
 }
 .locale-kn .program-summary-copy > p {
-  font-size: 13px;
-  line-height: 2.1;
+  font-size: 14px;
+  line-height: 2;
 }
 .locale-kn .program-audience {
   font-size: 11px;
@@ -1366,8 +1417,8 @@ details[open] > summary > svg {
   font-size: 17px;
 }
 .locale-kn .program-feature-grid p {
-  font-size: 12px;
-  line-height: 2.1;
+  font-size: 13px;
+  line-height: 2;
 }
 .locale-kn .programs-help h2 {
   font-size: 23px;
@@ -1379,8 +1430,8 @@ details[open] > summary > svg {
   font-size: 23px;
 }
 .locale-kn .role-card p {
-  font-size: 13px;
-  line-height: 2.1;
+  font-size: 14px;
+  line-height: 2;
 }
 .locale-kn .administrator-row h2 {
   font-size: 20px;
@@ -1392,25 +1443,25 @@ details[open] > summary > svg {
   font-size: 22px;
 }
 .locale-kn .brand-footer .brand-subtitle {
-  font-size: 8px;
+  font-size: 11px;
 }
 .locale-kn .footer-intro > p {
-  font-size: 12px;
-  line-height: 2.1;
+  font-size: 13px;
+  line-height: 2;
 }
 .locale-kn .footer-organisation > p {
   font-size: 18px;
 }
 .locale-kn .footer-bottom {
-  font-size: 9px;
+  font-size: 11px;
 }
 .locale-kn .dialog-inner h2 {
   font-family: "Inter", sans-serif;
   line-height: 1.3;
 }
 .site-header .brand-icon {
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   background: var(--navy);
   padding: 6px;
   border-radius: 12px;
@@ -1422,16 +1473,16 @@ details[open] > summary > svg {
 }
 .site-header .brand-title {
   color: var(--navy);
-  font-size: 27px;
+  font-size: 29px;
   line-height: 1.15;
-  letter-spacing: -0.035em;
-  font-weight: 800;
+  letter-spacing: -0.025em;
+  font-weight: 700;
 }
 .site-header .brand-subtitle {
   font-size: 13px;
-  font-weight: 600;
-  line-height: 1.5;
-  margin-top: 5px;
+  font-weight: 500;
+  line-height: 1.45;
+  margin-top: 3px;
   color: #fef3c7;
   padding-left: 8px;
   border-left: 2px solid #facc15;
@@ -1462,14 +1513,14 @@ details[open] > summary > svg {
   height: 420px;
 }
 .leadership-portrait-transparent figcaption {
-  padding: 14px 0 0;
+  padding: 18px 0 0;
   border: 0;
   background: transparent;
   text-align: center;
 }
 .leadership-portrait-transparent figcaption > span {
   color: var(--gold-dark);
-  font-size: 9px;
+  font-size: 11px;
 }
 .leadership-portrait-transparent figcaption h2 {
   color: var(--navy);
@@ -1514,7 +1565,14 @@ details[open] > summary > svg {
   }
   .site-header .brand-subtitle,
   .locale-kn .site-header .brand-subtitle {
-    font-size: 11.5px;
+    font-size: 12px;
+  }
+  .locale-kn .desktop-nav a {
+    font-size: 12px;
+  }
+  .language-switch,
+  .header-cta {
+    font-size: 12px;
   }
   .desktop-nav {
     gap: 4px;
@@ -1524,6 +1582,7 @@ details[open] > summary > svg {
   }
   .desktop-nav a {
     padding-inline: 10px;
+    font-size: 13px;
   }
   .leadership-portrait-transparent.leadership-portrait-large .portrait-photo {
     height: 370px;
@@ -1533,13 +1592,13 @@ details[open] > summary > svg {
     width: calc(100% - 72px);
   }
   .header-inner {
-    column-gap: 24px;
+    column-gap: 18px;
   }
   .desktop-nav {
     gap: 4px;
   }
   .header-controls {
-    gap: 17px;
+    gap: 10px;
   }
   .brand-title {
     font-size: 21px;
@@ -1571,10 +1630,10 @@ details[open] > summary > svg {
     font-size: 36px;
   }
   .hero-intro {
-    font-size: 14px;
+    font-size: 15px;
   }
   .locale-kn .hero-intro {
-    font-size: 13px;
+    font-size: 14px;
   }
   .hero-leader {
     max-width: 370px;
@@ -1584,13 +1643,13 @@ details[open] > summary > svg {
   }
   .hero-actions .button {
     padding-inline: 16px;
-    font-size: 12px;
+    font-size: 13px;
   }
   .locale-kn .hero-actions .button {
-    font-size: 11px;
+    font-size: 12px;
   }
   .section {
-    padding-block: 72px;
+    padding-block: 64px;
   }
   .section-heading {
     gap: 40px;
@@ -1618,6 +1677,31 @@ details[open] > summary > svg {
   }
 }
 @media (max-width: 960px) {
+  .role-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .role-card {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    column-gap: 24px;
+    padding: 28px;
+  }
+  .role-card .role-icon {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    margin: 0;
+  }
+  .role-card h2,
+  .role-card p,
+  .role-card .text-link {
+    grid-column: 2;
+  }
+  .role-card .text-link {
+    width: fit-content;
+    min-width: 250px;
+    max-width: 100%;
+  }
   .leadership-portrait-transparent.leadership-portrait-large .portrait-photo {
     height: 330px;
   }
@@ -1646,26 +1730,26 @@ details[open] > summary > svg {
     font-size: 31px;
   }
   .hero .section-label {
-    font-size: 9px;
+    font-size: 10px;
   }
   .hero-intro {
-    font-size: 13px;
+    font-size: 15px;
   }
   .locale-kn .hero-intro {
-    font-size: 12px;
+    font-size: 14px;
   }
   .hero-actions {
     gap: 10px;
   }
   .hero-actions .button {
-    font-size: 11px;
+    font-size: 12px;
     padding: 11px 13px;
   }
   .hero-actions .button-secondary {
     padding-inline: 13px;
   }
   .hero-commitment p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .hero-leader::before {
     inset: 14px -12px -14px 14px;
@@ -1683,11 +1767,11 @@ details[open] > summary > svg {
     font-size: 18px;
   }
   .portrait-top {
-    font-size: 6px;
+    font-size: 9px;
     padding-inline: 13px;
   }
   .locale-kn .portrait-top {
-    font-size: 6px;
+    font-size: 9px;
   }
   .mini-flag {
     width: 19px;
@@ -1697,7 +1781,7 @@ details[open] > summary > svg {
     font-size: 29px;
   }
   .section-heading > p {
-    font-size: 13px;
+    font-size: 14px;
     max-width: 240px;
   }
   .locale-kn .section-heading h2 {
@@ -1720,10 +1804,10 @@ details[open] > summary > svg {
     width: 22px;
   }
   .purpose-grid p {
-    font-size: 13px;
+    font-size: 14px;
   }
   .locale-kn .purpose-grid p {
-    font-size: 12px;
+    font-size: 13px;
   }
   .program-card {
     padding: 23px;
@@ -1733,13 +1817,13 @@ details[open] > summary > svg {
     font-size: 19px;
   }
   .program-card > p {
-    font-size: 13px;
+    font-size: 14px;
   }
   .locale-kn .program-card h3 {
     font-size: 19px;
   }
   .locale-kn .program-card > p {
-    font-size: 12px;
+    font-size: 13px;
   }
   .program-card-top {
     margin-bottom: 24px;
@@ -1791,7 +1875,7 @@ details[open] > summary > svg {
     font-size: 25px;
   }
   .about-grid > div > p:not(.section-label) {
-    font-size: 13px;
+    font-size: 14px;
   }
   .portrait-photo {
     height: 270px;
@@ -1850,6 +1934,16 @@ details[open] > summary > svg {
   }
 }
 @media (max-width: 680px) {
+  .role-card {
+    display: flex;
+  }
+  .role-card .role-icon {
+    margin: 0 0 23px;
+  }
+  .role-card .text-link {
+    width: 100%;
+    min-width: 0;
+  }
   .site-header .brand-icon {
     width: 48px;
     height: 48px;
@@ -1862,7 +1956,7 @@ details[open] > summary > svg {
   }
   .site-header .brand-subtitle,
   .locale-kn .site-header .brand-subtitle {
-    font-size: 10.5px;
+    font-size: 11px;
     line-height: 1.5;
     max-width: 176px;
     padding-left: 6px;
@@ -1870,6 +1964,8 @@ details[open] > summary > svg {
   }
   .header-inner {
     column-gap: 10px;
+    min-height: 88px;
+    padding-block: 12px;
   }
   .site-header .header-controls {
     gap: 8px;
@@ -1885,7 +1981,7 @@ details[open] > summary > svg {
     width: calc(100% - 40px);
   }
   .section {
-    padding-block: 54px;
+    padding-block: 52px;
   }
   .header-inner {
     min-height: 86px;
@@ -1938,8 +2034,8 @@ details[open] > summary > svg {
   }
   .hero-grid {
     grid-template-columns: 1fr;
-    gap: 36px;
-    padding-block: 38px 47px;
+    gap: 28px;
+    padding-block: 40px 44px;
   }
   .hero h1 {
     font-size: 43px;
@@ -1951,34 +2047,34 @@ details[open] > summary > svg {
     max-width: none;
   }
   .hero .section-label {
-    font-size: 8px;
-    letter-spacing: 0.11em;
+    font-size: 10px;
+    letter-spacing: 0.08em;
     margin-bottom: 17px;
   }
   .hero-intro {
-    font-size: 14px;
-    line-height: 1.95;
+    font-size: 15px;
+    line-height: 1.85;
     max-width: 460px;
   }
   .hero-actions {
-    gap: 12px;
-    margin-top: 24px;
+    gap: 16px;
+    margin-top: 26px;
   }
   .hero-actions .button {
-    padding: 11px 15px;
-    font-size: 12px;
-    min-height: 47px;
+    padding: 12px 16px;
+    font-size: 13px;
+    min-height: 50px;
   }
   .hero-actions .button-secondary {
-    padding-inline: 12px;
-    font-size: 11px;
+    padding-inline: 6px;
+    font-size: 13px;
   }
   .hero-commitment {
     margin-top: 22px;
     gap: 8px;
   }
   .hero-commitment p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .hero-leader {
     width: calc(100% - 26px);
@@ -1992,24 +2088,24 @@ details[open] > summary > svg {
     height: 305px;
   }
   .portrait-top {
-    font-size: 7px;
+    font-size: 9px;
     padding: 12px 15px;
   }
   .leadership-portrait figcaption {
     padding: 20px 22px 23px;
   }
   .leadership-portrait figcaption > span {
-    font-size: 8px;
+    font-size: 11px;
   }
   .leadership-portrait figcaption h2 {
     font-size: 23px;
     line-height: 1.4;
   }
   .leadership-portrait figcaption p {
-    font-size: 10px;
+    font-size: 13px;
   }
   .section-label {
-    font-size: 9px;
+    font-size: 10px;
     margin-bottom: 14px;
   }
   .section-heading {
@@ -2024,7 +2120,7 @@ details[open] > summary > svg {
   }
   .section-heading > p {
     max-width: none;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.95;
   }
   .purpose-grid {
@@ -2051,8 +2147,8 @@ details[open] > summary > svg {
     margin-bottom: 11px;
   }
   .purpose-grid p {
-    font-size: 14px;
-    line-height: 1.95;
+    font-size: 15px;
+    line-height: 1.85;
   }
   .program-grid {
     grid-template-columns: 1fr;
@@ -2067,8 +2163,9 @@ details[open] > summary > svg {
     margin-bottom: 13px;
   }
   .program-card > p {
-    font-size: 14px;
+    font-size: 15px;
     margin-bottom: 22px;
+    line-height: 1.85;
   }
   .program-card-top {
     margin-bottom: 23px;
@@ -2229,8 +2326,8 @@ details[open] > summary > svg {
     margin-bottom: 12px;
   }
   .program-summary-copy > p {
-    font-size: 14px;
-    line-height: 2;
+    font-size: 15px;
+    line-height: 1.85;
   }
   .program-audience {
     margin-top: 19px;
@@ -2285,8 +2382,8 @@ details[open] > summary > svg {
     line-height: 1.5;
   }
   .role-card p {
-    font-size: 14px;
-    line-height: 2;
+    font-size: 15px;
+    line-height: 1.85;
     margin-bottom: 23px;
   }
   .role-icon {
@@ -2298,7 +2395,7 @@ details[open] > summary > svg {
     align-items: flex-start;
     text-align: left;
     justify-content: flex-start;
-    font-size: 11px;
+    font-size: 12px;
     gap: 9px;
   }
   .privacy-note svg {
@@ -2316,15 +2413,16 @@ details[open] > summary > svg {
     font-size: 22px;
   }
   .brand-footer .brand-subtitle {
-    font-size: 8px;
+    font-size: 11px;
+    line-height: 1.6;
   }
   .brand-footer .brand-icon {
     width: 44px;
     height: 44px;
   }
   .footer-intro > p {
-    font-size: 13px;
-    line-height: 2;
+    font-size: 14px;
+    line-height: 1.85;
     margin-top: 19px;
     max-width: 350px;
   }
@@ -2333,17 +2431,17 @@ details[open] > summary > svg {
     margin-bottom: 10px;
   }
   .footer-links a {
-    font-size: 12px;
+    font-size: 14px;
   }
   .footer-organisation .small-label {
-    font-size: 8px;
+    font-size: 11px;
   }
   .footer-organisation > p {
     font-size: 16px;
     line-height: 1.7;
   }
   .footer-domain {
-    font-size: 10px;
+    font-size: 13px;
     overflow-wrap: anywhere;
   }
   .footer-bottom {
@@ -2351,14 +2449,15 @@ details[open] > summary > svg {
     justify-content: flex-start;
     gap: 13px 20px;
     padding-block: 23px;
-    font-size: 9px;
+    font-size: 12px;
   }
   .footer-bottom > span:first-child {
     flex-basis: 100%;
   }
   .footer-bottom button {
     margin-left: auto;
-    font-size: 9px;
+    font-size: 12px;
+    min-height: 32px;
   }
   .dialog-inner {
     padding: 40px 28px 29px;
@@ -2371,21 +2470,21 @@ details[open] > summary > svg {
     line-height: 1.65;
   }
   .locale-kn .hero .section-label {
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.035em;
   }
   .locale-kn .hero-intro {
-    font-size: 13px;
-    line-height: 2.05;
+    font-size: 14px;
+    line-height: 2;
   }
   .locale-kn .hero-actions .button {
-    font-size: 11px;
+    font-size: 12px;
   }
   .locale-kn .hero-commitment p {
-    font-size: 9px;
+    font-size: 11px;
   }
   .locale-kn .portrait-top {
-    font-size: 7px;
+    font-size: 9px;
   }
   .locale-kn .leadership-portrait figcaption h2 {
     font-size: 20px;
@@ -2394,23 +2493,23 @@ details[open] > summary > svg {
     font-size: 26px;
   }
   .locale-kn .section-heading > p {
-    font-size: 12px;
+    font-size: 13px;
   }
   .locale-kn .purpose-grid h3 {
     font-size: 22px;
   }
   .locale-kn .purpose-grid p {
-    font-size: 12px;
-    line-height: 2.1;
+    font-size: 14px;
+    line-height: 2;
   }
   .locale-kn .program-card h3 {
     font-size: 22px;
   }
   .locale-kn .program-card > p {
-    font-size: 13px;
+    font-size: 14px;
   }
   .locale-kn .text-link {
-    font-size: 12px;
+    font-size: 13px;
   }
   .locale-kn .section-footnote {
     font-size: 11px;
@@ -2419,13 +2518,13 @@ details[open] > summary > svg {
     font-size: 26px;
   }
   .locale-kn .audience-inner > p {
-    font-size: 12px;
+    font-size: 14px;
   }
   .locale-kn .invitation-inner h2 {
     font-size: 26px;
   }
   .locale-kn .invitation-inner p:not(.section-label) {
-    font-size: 12px;
+    font-size: 14px;
   }
   .locale-kn .page-intro h1 {
     font-size: 29px;
@@ -2452,7 +2551,8 @@ details[open] > summary > svg {
     font-size: 23px;
   }
   .locale-kn .program-summary-copy > p {
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 2;
   }
   .locale-kn .program-audience {
     font-size: 10px;
@@ -2473,7 +2573,7 @@ details[open] > summary > svg {
     font-size: 23px;
   }
   .locale-kn .role-card p {
-    font-size: 12px;
+    font-size: 14px;
   }
   .locale-kn .administrator-row h2 {
     font-size: 22px;
@@ -2501,7 +2601,7 @@ details[open] > summary > svg {
   }
   .site-header .brand-subtitle,
   .locale-kn .site-header .brand-subtitle {
-    font-size: 9.5px;
+    font-size: 10.5px;
     line-height: 1.5;
     max-width: 145px;
   }
@@ -2568,15 +2668,15 @@ details[open] > summary > svg {
     gap: 10px;
   }
   .hero-actions .button {
-    font-size: 11px;
+    font-size: 12px;
     padding-inline: 12px;
   }
   .hero-actions .button-secondary {
-    font-size: 10px;
-    padding-inline: 0;
+    font-size: 12px;
+    padding-inline: 6px;
   }
   .hero .section-label {
-    font-size: 7px;
+    font-size: 9px;
   }
   .locale-kn .hero .section-label {
     font-size: 8px;
@@ -2598,7 +2698,7 @@ details[open] > summary > svg {
     padding-inline: 12px;
   }
   .locale-kn .portrait-top {
-    font-size: 6px;
+    font-size: 9px;
   }
   .purpose-grid article {
     gap: 15px;
