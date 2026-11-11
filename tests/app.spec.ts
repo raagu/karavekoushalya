@@ -9,7 +9,7 @@ const routes = {
 
 async function english(page: Page) {
   await page.goto("/");
-  await page.getByRole("button", { name: "English", exact: true }).click();
+  await page.getByRole("link", { name: "English", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
 }
 
@@ -24,11 +24,11 @@ test("starts in Kannada and remembers a visitor's language choice", async ({
 }) => {
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("lang", "kn");
-  await page.getByRole("button", { name: "English", exact: true }).click();
+  await page.getByRole("link", { name: "English", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  await page.getByRole("button", { name: "ಕನ್ನಡ", exact: true }).click();
+  await page.getByRole("link", { name: "ಕನ್ನಡ", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "kn");
 });
 
@@ -64,7 +64,7 @@ test("home introduces leadership, vision and mission clearly", async ({
       ),
     )
     .toBe(true);
-  await page.getByRole("button", { name: "ಕನ್ನಡ", exact: true }).click();
+  await page.getByRole("link", { name: "ಕನ್ನಡ", exact: true }).click();
   await expect(
     page
       .locator("main")
@@ -103,7 +103,7 @@ test("joining offers three public roles and links guidance and mentor registrati
   );
   for (const language of ["en", "kn"] as const) {
     if (language === "kn")
-      await page.getByRole("button", { name: "ಕನ್ನಡ", exact: true }).click();
+      await page.getByRole("link", { name: "ಕನ್ನಡ", exact: true }).click();
     const cards = page.locator("main .role-grid .role-card");
     await expect(cards).toHaveCount(3);
     await expect(cards.locator("h2")).toHaveText(
@@ -130,7 +130,7 @@ test("joining offers three public roles and links guidance and mentor registrati
     await expect(popup).toHaveURL(forms[1].url);
     await expect(popup).toHaveTitle("Mentor registration form");
     await expect(page.getByRole("dialog")).not.toBeVisible();
-    await expect(page).toHaveURL(/#\/join$/);
+    await expect(page).toHaveURL(/\/(en|kn)\/join\/$/);
     await popup.close();
   }
   // Only a stubbed form page was opened; the real Google Form was not submitted.
@@ -188,7 +188,7 @@ test("all four pages are readable without horizontal overflow in both languages"
   await english(page);
   for (const language of ["en", "kn"]) {
     if (language === "kn")
-      await page.getByRole("button", { name: "ಕನ್ನಡ", exact: true }).click();
+      await page.getByRole("link", { name: "ಕನ್ನಡ", exact: true }).click();
     for (const [route, heading] of Object.entries(routes)) {
       await page.goto(`/#/${route}`);
       await expect(page.locator("main h1")).toBeVisible();
@@ -215,7 +215,7 @@ test("the logo, name, navigation and controls stay aligned at narrow and desktop
   await english(page);
   for (const language of ["en", "kn"]) {
     if (language === "kn")
-      await page.getByRole("button", { name: "ಕನ್ನಡ", exact: true }).click();
+      await page.getByRole("link", { name: "ಕನ್ನಡ", exact: true }).click();
     for (const width of [320, 390, 961, 1280]) {
       await page.setViewportSize({ width, height: 900 });
       await page.evaluate(() => document.fonts.ready);
@@ -309,7 +309,7 @@ test("navigation supports browser history and mobile access", async ({
   const mobile = testInfo.project.name.includes("mobile");
   let navigation = await openNavigation(page, mobile);
   await navigation.getByRole("link", { name: "About us", exact: true }).click();
-  await expect(page).toHaveURL(/#\/about$/);
+  await expect(page).toHaveURL(/\/en\/about\/$/);
   await expect(
     page.getByRole("heading", { name: routes.about, exact: true }),
   ).toBeVisible();
@@ -317,9 +317,9 @@ test("navigation supports browser history and mobile access", async ({
   await navigation
     .getByRole("link", { name: "Our programs", exact: true })
     .click();
-  await expect(page).toHaveURL(/#\/programs$/);
+  await expect(page).toHaveURL(/\/en\/programs\/$/);
   await page.goBack();
-  await expect(page).toHaveURL(/#\/about$/);
+  await expect(page).toHaveURL(/\/en\/about\/$/);
   await expect(
     page.getByRole("heading", { name: routes.about, exact: true }),
   ).toBeVisible();
@@ -428,7 +428,7 @@ test("pages, language switches, program details and dialogs produce no browser e
         .click();
     }
   }
-  await page.getByRole("button", { name: "ಕನ್ನಡ", exact: true }).click();
+  await page.getByRole("link", { name: "ಕನ್ನಡ", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "kn");
   expect(errors).toEqual([]);
 });

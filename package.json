@@ -8,11 +8,13 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir .ssr && node scripts/prerender.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:deployment": "playwright test --config=playwright.deployment.config.ts"
+    "test:deployment": "playwright test --config=playwright.deployment.config.ts",
+    "build:project": "SITE_BASE_PATH=/karavekoushalya/ SITE_OUT_DIR=dist-project npm run build",
+    "check:live": "node scripts/check-live-site.mjs"
   },
   "dependencies": {
     "lucide-react": "1.70.0",

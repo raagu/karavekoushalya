@@ -1,7 +1,7 @@
 // Local deployment checks only. GitHub Pages serves the actual website.
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
-import { resolve, sep, extname } from "node:path";
+import { resolve, sep, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../dist/", import.meta.url));
@@ -10,6 +10,9 @@ const types = {
   ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".png": "image/png",
+  ".webp": "image/webp",
+  ".xml": "application/xml; charset=utf-8",
+  ".txt": "text/plain; charset=utf-8",
   ".jpeg": "image/jpeg",
   ".svg": "image/svg+xml",
   ".woff2": "font/woff2",
@@ -17,12 +20,16 @@ const types = {
 
 // Isolated origins prevent root assets from masking broken project-path URLs.
 const mounts = [
-  { port: 4174, prefix: "/" },
-  { port: 4175, prefix: "/karavekoushalya/" },
+  { port: 4174, prefix: "/", root },
+  {
+    port: 4175,
+    prefix: "/karavekoushalya/",
+    root: fileURLToPath(new URL("../dist-project/", import.meta.url)),
+  },
 ];
 
 await stat(resolve(root, "index.html"));
-const servers = mounts.map(({ prefix }) =>
+const servers = mounts.map(({ prefix, root }) =>
   createServer(async (request, response) => {
     try {
       if (!["GET", "HEAD"].includes(request.method ?? "")) {
@@ -37,10 +44,20 @@ const servers = mounts.map(({ prefix }) =>
         return;
       }
       const relative = pathname.slice(prefix.length) || "index.html";
-      const file = resolve(root, relative);
+      let file = resolve(root, relative);
       if (!file.startsWith(root.endsWith(sep) ? root : `${root}${sep}`)) {
         response.writeHead(404).end();
         return;
+      }
+      if ((await stat(file)).isDirectory()) {
+        if (!pathname.endsWith("/")) {
+          const url = new URL(request.url, "http://localhost");
+          response
+            .writeHead(301, { Location: `${url.pathname}/${url.search}` })
+            .end();
+          return;
+        }
+        file = join(file, "index.html");
       }
       const body = await readFile(file);
       response.writeHead(200, {

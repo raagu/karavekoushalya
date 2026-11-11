@@ -12,8 +12,7 @@ function applicableViolations(
     if (violation.id !== "color-contrast") return [violation];
     const nodes = violation.nodes.filter(
       // Match the node itself, not an ancestor containing the wordmark.
-      (node) =>
-        !node.html.split(">")[0].includes('data-brand-logotype="true"'),
+      (node) => !node.html.split(">")[0].includes('data-brand-logotype="true"'),
     );
     return nodes.length ? [{ ...violation, nodes }] : [];
   });
@@ -26,7 +25,7 @@ for (const language of ["kn", "en"] as const) {
     test.setTimeout(120_000);
     await page.goto("/");
     if (language === "en")
-      await page.getByRole("button", { name: "English", exact: true }).click();
+      await page.getByRole("link", { name: "English", exact: true }).click();
 
     for (const route of ["home", "about", "programs", "join"]) {
       await test.step(route, async () => {

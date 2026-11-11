@@ -10,6 +10,9 @@ for (const language of ["kn", "en"] as const) {
     const failures: string[] = [];
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
+    page.on("console", (message) => {
+      if (message.type() === "error") errors.push(message.text());
+    });
     page.on("response", (response) => {
       if (response.status() >= 400)
         failures.push(`${response.status()} ${response.url()}`);
@@ -31,13 +34,13 @@ for (const language of ["kn", "en"] as const) {
       expect(outside.status()).toBe(404);
     }
 
-    await page.goto(`${baseURL}#/home`);
-    if (language === "en")
-      await page.getByRole("button", { name: "English", exact: true }).click();
+    await page.goto(`${baseURL}${language}/`);
     await expect(page.locator("html")).toHaveAttribute("lang", language);
 
     for (const route of ["home", "about", "programs", "join"]) {
-      await page.goto(`${baseURL}#/${route}`);
+      await page.goto(
+        `${baseURL}${language}/${route === "home" ? "" : `${route}/`}`,
+      );
       await page.reload();
       await expect(page.locator("main h1")).toBeVisible();
       await expect(page.locator("html")).toHaveAttribute("lang", language);

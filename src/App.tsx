@@ -30,9 +30,16 @@ import {
   type Localized,
 } from "./siteContent";
 
-type Page = "home" | "about" | "programs" | "join";
+import { NavigationContext, SiteLink } from "./navigation";
+import {
+  locationFromPath,
+  locationFromLegacyHash,
+  pagePath,
+  type Page,
+  type SiteLocation,
+} from "./routing";
+import { updateMetadata } from "./seo";
 type RoleId = (typeof roles)[number]["id"];
-type Route = { page: Page; focus?: string };
 type LanguageProps = { lang: Lang };
 const nav = {
   home: copy("Home", "ಮುಖಪುಟ"),
@@ -47,47 +54,26 @@ const roleIcons = {
   corporate: Building2,
   admin: ShieldCheck,
 };
-const logo = `${import.meta.env.BASE_URL}images/karave-koushalya-logo-v3.png`;
-
-function readRoute(): Route {
-  const [name, query = ""] = window.location.hash
-    .replace(/^#\/?/, "")
-    .split("?");
-  if (name === "pathways") return { page: "programs", focus: "skills" };
-  if (name === "mentorship") return { page: "programs", focus: "guidance" };
-  const page = (["home", "about", "programs", "join"] as string[]).includes(
-    name,
-  )
-    ? (name as Page)
-    : "home";
-  const focus = new URLSearchParams(query).get("focus");
-  return {
-    page,
-    focus: programAreas.some((program) => program.id === focus)
-      ? focus!
-      : undefined,
-  };
-}
-
-function readLanguage(): Lang {
-  try {
-    return localStorage.getItem("karave-language") === "en" ? "en" : "kn";
-  } catch {
-    return "kn";
-  }
-}
+const logo = `${import.meta.env.BASE_URL}images/karave-koushalya-logo-128.webp`;
 
 function Brand({ lang, footer = false }: LanguageProps & { footer?: boolean }) {
   return (
-    <a
+    <SiteLink
       className={`brand${footer ? " brand-footer" : ""}`}
-      href="#/home"
+      page="home"
       aria-label={
         lang === "en" ? "Karave Koushalya home" : "ಕರವೇ ಕೌಶಲ್ಯ ಮುಖಪುಟ"
       }
     >
       <span className="brand-icon" aria-hidden="true">
-        <img src={logo} width="1254" height="1254" alt="" />
+        <img
+          src={logo}
+          srcSet={`${logo} 128w, ${import.meta.env.BASE_URL}images/karave-koushalya-logo-256.webp 256w`}
+          sizes="64px"
+          width="1254"
+          height="1254"
+          alt=""
+        />
       </span>
       <span className="brand-text">
         <strong className="brand-title" data-brand-logotype="true">
@@ -104,15 +90,11 @@ function Brand({ lang, footer = false }: LanguageProps & { footer?: boolean }) {
             : "ಕರ್ನಾಟಕ ರಕ್ಷಣಾ ವೇದಿಕೆಯ ಉಪಕ್ರಮ"}
         </span>
       </span>
-    </a>
+    </SiteLink>
   );
 }
 
-function Header({
-  lang,
-  page,
-  onLanguage,
-}: LanguageProps & { page: Page; onLanguage: () => void }) {
+function Header({ lang, page }: LanguageProps & { page: Page }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -153,33 +135,34 @@ function Header({
           aria-label={lang === "en" ? "Main navigation" : "ಮುಖ್ಯ ಸಂಚರಣೆ"}
         >
           {(["home", "about", "programs"] as Page[]).map((item) => (
-            <a
+            <SiteLink
               key={item}
-              href={`#/${item}`}
+              page={item}
               aria-current={page === item ? "page" : undefined}
             >
               {nav[item][lang]}
-            </a>
+            </SiteLink>
           ))}
         </nav>
         <div className="header-controls">
-          <button
+          <SiteLink
+            page={page}
+            language={lang === "kn" ? "en" : "kn"}
             className="language-switch"
-            onClick={onLanguage}
             lang={lang === "kn" ? "en" : "kn"}
             aria-label={lang === "kn" ? "English" : "ಕನ್ನಡ"}
           >
             <Languages size={16} aria-hidden="true" />
             <span>{lang === "kn" ? "English" : "ಕನ್ನಡ"}</span>
-          </button>
-          <a
-            href="#/join"
+          </SiteLink>
+          <SiteLink
+            page="join"
             className="button button-primary header-cta"
             aria-current={page === "join" ? "page" : undefined}
           >
             {nav.join[lang]}
             <ArrowUpRight size={16} aria-hidden="true" />
-          </a>
+          </SiteLink>
           <button
             ref={menuRef}
             className="menu-button"
@@ -212,9 +195,9 @@ function Header({
         >
           <div className="container">
             {(Object.keys(nav) as Page[]).map((item) => (
-              <a
+              <SiteLink
                 key={item}
-                href={`#/${item}`}
+                page={item}
                 onClick={() => {
                   setOpen(false);
                   menuRef.current?.focus();
@@ -223,7 +206,7 @@ function Header({
               >
                 {nav[item][lang]}
                 <ArrowUpRight size={17} aria-hidden="true" />
-              </a>
+              </SiteLink>
             ))}
           </div>
         </nav>
@@ -268,10 +251,13 @@ function LeadershipPortrait({
       )}
       <div className="portrait-photo">
         <img
-          src={`${import.meta.env.BASE_URL}images/narayana-gowda-transparent.png`}
+          src={`${import.meta.env.BASE_URL}images/narayana-gowda-transparent.webp`}
+          srcSet={`${import.meta.env.BASE_URL}images/narayana-gowda-transparent-480.webp 480w, ${import.meta.env.BASE_URL}images/narayana-gowda-transparent-960.webp 960w, ${import.meta.env.BASE_URL}images/narayana-gowda-transparent.webp 1254w`}
+          sizes="(max-width: 600px) calc(100vw - 48px), 420px"
           width="400"
           height="400"
           fetchPriority="high"
+          decoding="async"
           alt={
             lang === "en"
               ? "Portrait of T. A. Narayana Gowda"
@@ -364,12 +350,12 @@ function ProgramOverview({ lang }: LanguageProps) {
                 : "ಕೌಶಲ್ಯ. ಮಾರ್ಗದರ್ಶನ. ವೃತ್ತಿ ಬೆಂಬಲ."}
             </h2>
           </div>
-          <a className="text-link" href="#/programs">
+          <SiteLink className="text-link" page="programs">
             {lang === "en"
               ? "Explore our programs"
               : "ಕಾರ್ಯಕ್ರಮಗಳನ್ನು ತಿಳಿಯಿರಿ"}
             <ArrowRight size={18} aria-hidden="true" />
-          </a>
+          </SiteLink>
         </div>
         <div className="program-grid">
           {programAreas.map((program, index) => {
@@ -384,13 +370,14 @@ function ProgramOverview({ lang }: LanguageProps) {
                 </div>
                 <h3>{program.title[lang]}</h3>
                 <p>{program.intro[lang]}</p>
-                <a
+                <SiteLink
                   className="text-link"
-                  href={`#/programs?focus=${program.id}`}
+                  page="programs"
+                  focus={program.id}
                 >
                   {lang === "en" ? "Learn more" : "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ"}
                   <ArrowUpRight size={18} aria-hidden="true" />
-                </a>
+                </SiteLink>
               </article>
             );
           })}
@@ -424,10 +411,10 @@ function Invitation({ lang }: LanguageProps) {
               : "ಕಲಿಯಲು, ಮಾರ್ಗದರ್ಶನ ನೀಡಲು ಅಥವಾ ಸಹಭಾಗಿಯಾಗಲು ಬಯಸುವ ನಿಮ್ಮೆಲ್ಲರಿಗೂ ಇಲ್ಲಿ ಅವಕಾಶವಿದೆ."}
           </p>
         </div>
-        <a href="#/join" className="button button-gold">
+        <SiteLink page="join" className="button button-gold">
           {nav.join[lang]}
           <ArrowUpRight size={18} aria-hidden="true" />
-        </a>
+        </SiteLink>
       </div>
     </section>
   );
@@ -461,15 +448,15 @@ function HomePage({ lang }: LanguageProps) {
             </h1>
             <p className="hero-intro">{intro[lang]}</p>
             <div className="hero-actions">
-              <a className="button button-primary" href="#/programs">
+              <SiteLink className="button button-primary" page="programs">
                 {lang === "en"
                   ? "Discover our programs"
                   : "ಕಾರ್ಯಕ್ರಮಗಳನ್ನು ಅರಿಯಿರಿ"}
                 <ArrowRight size={18} aria-hidden="true" />
-              </a>
-              <a className="button button-secondary" href="#/about">
+              </SiteLink>
+              <SiteLink className="button button-secondary" page="about">
                 {lang === "en" ? "About the initiative" : "ಉಪಕ್ರಮದ ಬಗ್ಗೆ"}
-              </a>
+              </SiteLink>
             </div>
             <div className="hero-commitment">
               <span aria-hidden="true" />
@@ -525,7 +512,7 @@ function PageIntro({
     <section className="page-intro">
       <div className="container">
         <p className="breadcrumbs">
-          <a href="#/home">{nav.home[lang]}</a>
+          <SiteLink page="home">{nav.home[lang]}</SiteLink>
           <span aria-hidden="true">/</span>
           <span>{label[lang]}</span>
         </p>
@@ -732,12 +719,12 @@ function ProgramsPage({ lang }: LanguageProps) {
                         </div>
                       ))}
                     </div>
-                    <a className="text-link" href="#/join">
+                    <SiteLink className="text-link" page="join">
                       {lang === "en"
                         ? "Registration options"
                         : "ನೋಂದಣಿ ಆಯ್ಕೆಗಳು"}
                       <ArrowRight size={17} aria-hidden="true" />
-                    </a>
+                    </SiteLink>
                   </details>
                 </article>
               );
@@ -756,10 +743,10 @@ function ProgramsPage({ lang }: LanguageProps) {
                   : "ಮಾರ್ಗದರ್ಶನ ಬಯಸುವವರು, ಮಾರ್ಗದರ್ಶಕರು ಮತ್ತು ಸಹಭಾಗಿ ಸಂಸ್ಥೆಗಳ ಆಯ್ಕೆಗಳನ್ನು ತಿಳಿಯಿರಿ."}
               </p>
             </div>
-            <a href="#/join" className="button button-primary">
+            <SiteLink page="join" className="button button-primary">
               {nav.join[lang]}
               <ArrowRight size={18} aria-hidden="true" />
-            </a>
+            </SiteLink>
           </div>
         </div>
       </section>
@@ -859,9 +846,9 @@ function Footer({
         <div className="footer-links">
           <h2>{lang === "en" ? "Explore" : "ತಿಳಿಯಿರಿ"}</h2>
           {(Object.keys(nav) as Page[]).map((item) => (
-            <a key={item} href={`#/${item}`}>
+            <SiteLink key={item} page={item}>
               {nav[item][lang]}
-            </a>
+            </SiteLink>
           ))}
         </div>
         <div className="footer-organisation">
@@ -959,26 +946,54 @@ function RegistrationDialog({
   );
 }
 
-export default function App() {
-  const [lang, setLang] = useState<Lang>(readLanguage);
-  const [route, setRoute] = useState<Route>(readRoute);
+export default function App({
+  initialLocation,
+}: {
+  initialLocation: SiteLocation;
+}) {
+  const [route, setRoute] = useState<SiteLocation>(initialLocation);
+  const lang = route.lang;
   const [registration, setRegistration] = useState<RoleId | null>(null);
   const mainRef = useRef<HTMLElement>(null);
   const firstRoute = useRef(true);
+  function navigate(destination: SiteLocation) {
+    const path = pagePath(destination);
+    if (`${window.location.pathname}${window.location.search}` === path) return;
+    window.history.pushState(null, "", path);
+    setRoute(destination);
+  }
   useEffect(() => {
-    const update = () => setRoute(readRoute());
+    const update = () => {
+      const destination = locationFromLegacyHash(
+        window.location.hash,
+        route.lang,
+      );
+      if (destination) {
+        window.history.replaceState(null, "", pagePath(destination));
+        setRoute(destination);
+      } else {
+        const location = locationFromPath(
+          window.location.pathname,
+          window.location.search,
+        );
+        if (location) setRoute(location);
+      }
+    };
+    window.addEventListener("popstate", update);
     window.addEventListener("hashchange", update);
-    return () => window.removeEventListener("hashchange", update);
-  }, []);
+    return () => {
+      window.removeEventListener("popstate", update);
+      window.removeEventListener("hashchange", update);
+    };
+  }, [route.lang]);
   useEffect(() => {
-    document.documentElement.lang = lang;
-    document.title = `${nav[route.page][lang]} · ${lang === "en" ? "Karave Koushalya" : "ಕರವೇ ಕೌಶಲ್ಯ"}`;
+    updateMetadata(route);
     try {
       localStorage.setItem("karave-language", lang);
     } catch {
-      /* The toggle works without browser storage. */
+      /* The language link works without browser storage. */
     }
-  }, [lang, route.page]);
+  }, [lang, route]);
   useEffect(() => {
     if (route.focus) {
       const details = document.getElementById(
@@ -998,40 +1013,38 @@ export default function App() {
     firstRoute.current = false;
   }, [route]);
   return (
-    <div className={`app locale-${lang}`}>
-      <a
-        className="skip-link"
-        href="#main-content"
-        onClick={(event) => {
-          event.preventDefault();
-          mainRef.current?.focus();
-          mainRef.current?.scrollIntoView();
-        }}
-      >
-        {lang === "en" ? "Skip to content" : "ವಿಷಯಕ್ಕೆ ತೆರಳಿ"}
-      </a>
-      <Header
-        lang={lang}
-        page={route.page}
-        onLanguage={() => setLang(lang === "kn" ? "en" : "kn")}
-      />
-      <main id="main-content" ref={mainRef} tabIndex={-1}>
-        {route.page === "home" ? (
-          <HomePage lang={lang} />
-        ) : route.page === "about" ? (
-          <AboutPage lang={lang} />
-        ) : route.page === "programs" ? (
-          <ProgramsPage lang={lang} />
-        ) : (
-          <JoinPage lang={lang} onRegister={setRegistration} />
-        )}
-      </main>
-      <Footer lang={lang} onRegister={setRegistration} />
-      <RegistrationDialog
-        lang={lang}
-        role={registration}
-        onClose={() => setRegistration(null)}
-      />
-    </div>
+    <NavigationContext.Provider value={{ location: route, navigate }}>
+      <div className={`app locale-${lang}`}>
+        <a
+          className="skip-link"
+          href="#main-content"
+          onClick={(event) => {
+            event.preventDefault();
+            mainRef.current?.focus();
+            mainRef.current?.scrollIntoView();
+          }}
+        >
+          {lang === "en" ? "Skip to content" : "ವಿಷಯಕ್ಕೆ ತೆರಳಿ"}
+        </a>
+        <Header lang={lang} page={route.page} />
+        <main id="main-content" ref={mainRef} tabIndex={-1}>
+          {route.page === "home" ? (
+            <HomePage lang={lang} />
+          ) : route.page === "about" ? (
+            <AboutPage lang={lang} />
+          ) : route.page === "programs" ? (
+            <ProgramsPage lang={lang} />
+          ) : (
+            <JoinPage lang={lang} onRegister={setRegistration} />
+          )}
+        </main>
+        <Footer lang={lang} onRegister={setRegistration} />
+        <RegistrationDialog
+          lang={lang}
+          role={registration}
+          onClose={() => setRegistration(null)}
+        />
+      </div>
+    </NavigationContext.Provider>
   );
 }
