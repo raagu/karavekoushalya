@@ -39,8 +39,11 @@ jobs:
       - name: Build project-path compatibility version
         run: npm run build:project
 
+      # Hosted runners already include Chromium's system libraries. The site
+      # bundles its fonts, so no apt refresh or extra font packages are needed.
       - name: Install browser for checks
-        run: npx playwright install --with-deps chromium
+        timeout-minutes: 5
+        run: npx playwright install chromium
 
       - name: Check desktop, mobile and both languages
         run: npm test
